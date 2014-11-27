@@ -1,0 +1,54 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="Ms.js" type="application/javascript"></script>
+<script type="application/javascript">
+function gettimeofday() {
+    var d = new Date();
+    return new Array(d.getTime(),12)
+}
+</script>
+<style>
+#centerdiv {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+table.center {
+    margin-left:auto; 
+    margin-right:auto;
+}
+
+td.cfeld {
+    text-align:center;
+    background-color: rgb(230,230,230);
+        padding: 7px;
+}
+
+#spielfeld td {
+    border: 1px solid black;
+    width: 30px;
+    height: 40px;
+    overflow: hidden;
+    padding: 3px;
+    margin: 3px;
+    text-align: center;
+    vertical-align: center;
+    font-family: "Arial";
+}
+</style>
+</head>
+<body>
+    <div id="centerdiv">
+        243
+        <table class="center">
+            <tr><td></td><td class="cfeld" id="coben" >↑</td><td></td></tr>
+            <tr><td class="cfeld" id="clinks">←</td><td>
+                <table id="spielfeld" class="center"></table>
+            </td><td class="cfeld" id="crechts">→</td>
+            <tr><td></td><td class="cfeld" id="cunten">↓</td><td></td></tr>
+        </table>
+    </div>
+</body>
+</html>
