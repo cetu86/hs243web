@@ -68,11 +68,15 @@ actualmain config@(Config _ _ params@Params {..} ) = do
           verarbeiteEingabe :: MVar Brett -> Maybe Ar -> CIO ()
           verarbeiteEingabe b (Just ar) = do 
                                     brett <- takeMVar b
-                                    brett' <- schritt config ar brett
-                                    putMVar b brett'
-                                    zeigeBrett brett'
-                                    behandleRandfälle brett' 
+                                    if ( isWonorOver brett ) 
+                                        then putMVar b brett 
+                                        else do
+                                            brett' <- schritt config ar brett
+                                            putMVar b brett'
+                                            zeigeBrett brett'
+                                            behandleRandfälle brett' 
           verarbeiteEingabe b Nothing = return ()
+          isWonorOver = (||) <$> isOver params <*> isWon params
 
           behandleRandfälle brett | isOver params brett = alert "GAME OVER!"
                                   |  isWon params brett = alert "you win :-)"
@@ -84,8 +88,10 @@ actualmain config@(Config _ _ params@Params {..} ) = do
                     sequence_ . zipWith zeigeWert werte
                         where zeigeWert wert e  = do
                                 clearChildren e  
-                                setStyle e "background-color" (farbe wert)
-                                when (wert /= 0) $ (faddChild e .(te .show)) wert 
+                                setStyle e "background" (farbe wert)
+                                (faddChild e .(te .show)) wert 
+                                if (wert == 0) then (setStyle e "color" "white")
+                                               else (setStyle e "color" "black")
 
           farben = [(237,201,81),(235,104,65),(204,51,63),(106,74,60),(0,160,176)]
           farbe x = let fs = [f | (f,n) <- zip farben [0..], base^n == x ]
